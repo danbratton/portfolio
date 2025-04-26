@@ -1,7 +1,7 @@
 # Portfolio of Projects
 
 ## [Data modeling for Wishi with dbt and Looker](https://github.com/danbratton/wishi-dbt/blob/main/wishi/WALKTHROUGH.md)
-I built and maitain a wishlist application called [Wishi](http://www.getwishi.com). On Wishi users create an accounts, create wishlists, add items to wishilsts, and share wishlists with others. Along this user journey, there are several events that I want to track so that I can measure important metrics like Monthly Active Users, Activation Rate, Retention Rate, and more.
+I built and maintain a wishlist application called [Wishi](http://www.getwishi.com). On Wishi users create an accounts, create wishlists, add items to wishilsts, and share wishlists with others. Along this user journey, there are several events that I want to track so that I can measure important metrics like Monthly Active Users, Activation Rate, Retention Rate, and more.
 
 I designed a data model to transform raw event data into analytics-ready data. Raw event data is generated on the **Django** backend and stored in a **Postgres** database. From there, **dbt** is used to build a fact table for events and several dimension tables. I visualized the data with **Looker Studio** in [this public dashboard](https://lookerstudio.google.com/reporting/b5c35fcb-9d47-48e8-af6f-e75dd61164da).
 
