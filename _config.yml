@@ -1,0 +1,35 @@
+title: "Dan Bratton — Product Management & Analytics"
+description: "Product management and analytics case studies"
+author: "Dan Bratton"
+email: "dancbratton@gmail.com"
+linkedin: "https://www.linkedin.com/in/danbratton/"
+github: "https://github.com/danbratton"
+url: "https://danbratton.com"
+baseurl: ""
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+permalink: /:title/
+
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: case-study
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+  - .jekyll-cache

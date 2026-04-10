@@ -1,0 +1,36 @@
+---
+layout: default
+---
+<div class="home">
+
+  <section class="hero">
+    <h1>{{ page.name | default: site.author }}</h1>
+    {% if page.tagline %}<p class="tagline">{{ page.tagline }}</p>{% endif %}
+    <div class="bio">
+      {{ content }}
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Selected work</p>
+    <div class="project-grid">
+      {%- assign projects = site.projects | sort: "order" -%}
+      {% for project in projects %}
+      <a class="project-card" href="{{ project.url | relative_url }}">
+        <span class="card-image"{% if project.card_image %} style="background-image: url('{{ project.card_image | relative_url }}')"{% endif %}></span>
+        <div class="card-body">
+          {% if project.company %}<p class="card-eyebrow">{{ project.company }}</p>{% endif %}
+          <h2 class="card-headline">{{ project.card_headline | default: project.title }}</h2>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="contact">
+    <p class="section-label">Get in touch</p>
+    {% if site.email %}<p><strong>Email:</strong> <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>{% endif %}
+    {% if site.linkedin %}<p><strong>LinkedIn:</strong> <a href="{{ site.linkedin }}">{{ site.linkedin | remove: "https://" | remove: "www." }}</a></p>{% endif %}
+  </section>
+
+</div>

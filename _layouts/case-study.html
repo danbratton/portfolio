@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<main>
+  <a class="back-link" href="{{ '/' | relative_url }}">← All projects</a>
+
+  <h1>{{ page.title }}</h1>
+  <p class="meta">
+    {%- if page.role %}<strong>Role:</strong> {{ page.role }}{% endif -%}
+    {%- if page.company %} · <strong>Company:</strong> {{ page.company }}{% endif -%}
+    {%- if page.timeline %} · <strong>Timeline:</strong> {{ page.timeline }}{% endif -%}
+  </p>
+
+  {{ content }}
+
+  {% if page.skills %}
+  <div class="skills">
+    <strong>Skills this project exercised:</strong> {{ page.skills }}
+  </div>
+  {% endif %}
+</main>
