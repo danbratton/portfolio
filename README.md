@@ -1,34 +1,186 @@
-# Portfolio of Projects
+# danbratton.com — portfolio
 
-## [Data modeling for Wishi with dbt and Looker](https://github.com/danbratton/wishi-dbt/blob/main/wishi/WALKTHROUGH.md)
-I built and maintain a wishlist application called [Wishi](http://www.getwishi.com). On Wishi users create an accounts, create wishlists, add items to wishilsts, and share wishlists with others. Along this user journey, there are several events that I want to track so that I can measure important metrics like Monthly Active Users, Activation Rate, Retention Rate, and more.
+Jekyll site hosted on GitHub Pages, served from the custom domain `danbratton.com`. Long-form PM/analytics case studies authored as markdown in `_projects/`.
 
-I designed a data model to transform raw event data into analytics-ready data. Raw event data is generated on the **Django** backend and stored in a **Postgres** database. From there, **dbt** is used to build a fact table for events and several dimension tables. I visualized the data with **Looker Studio** in [this public dashboard](https://lookerstudio.google.com/reporting/b5c35fcb-9d47-48e8-af6f-e75dd61164da).
+## Local preview
 
-The **dbt** codebase I use is [here](https://github.com/danbratton/wishi-dbt/tree/main/wishi). 
+**Requires Ruby 3.0 or newer.** macOS system Ruby (`/usr/bin/ruby`) is 2.6 and won't work — the current `github-pages` gem needs 3.0+.
 
-This [walkthrough](https://github.com/danbratton/wishi-dbt/blob/main/wishi/WALKTHROUGH.md) explains the data modeling decisions I made. 
+Install a modern Ruby once:
 
-## [Wishi - The simple, sharable wishlist](https://www.getwishi.com)
+```bash
+brew install ruby
+echo 'export PATH="/opt/homebrew/opt/ruby/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+ruby --version   # should report 3.x
+```
 
-### Motivation
-After running my family's annual secret santa, I was annoyed that Amazon no longer allowed non-Amazon items on wish lists. This was how we'd shared lists as a family for years!
+Then from the repo:
 
-I tested a few other alternatives, but many were too complicated or difficult to use for our simple need: adding items to a list and sharing it.
+```bash
+cd ~/VSCodeProjects/portfolio
+bundle install
+bundle exec jekyll serve --livereload
+```
 
-Here's what ended up happening. Members of my family used a hodpodge of options from using a Google Docs to from texting their list to the group chat 🤦‍♂️. It was a mess. So much so that in the confusion I ended up not getting a gift at all while someone else got 2 gifts!
+Open <http://localhost:4000>. Saving a file auto-rebuilds.
 
-I set out to solve this myself. Thus, [Wishi](https://www.getwishi.com) was born. 
+> **Note:** You don't strictly need a local preview to deploy — GitHub Pages builds and serves the site on its own infrastructure. Local preview is only for iterating on styling and content before pushing.
 
-### Tech Stack
-I decided to build Wishi using the Django framework because I am most familiar with Python, which Django uses. I also figured if it's good enough for Instagram it should be good enough for me.
+## Adding a new case study
 
-I also decided to use Postgres for my database. I've used it before, it pairs well with Django, and will perform good enough for my needs.
+1. Create `_projects/<slug>.md` (e.g. `_projects/mural-image-panel.md`).
+2. Add front matter:
 
-I used bootstrap to build the front end components.
+   ```yaml
+   ---
+   title: "The full title of the case study"
+   description: "One-sentence summary used in meta description and sharing previews."
+   role: "Product Manager"
+   company: "Company Name"
+   timeline: "90 days, pre-launch"
+   card_headline: "Short headline that appears on the project card"
+   card_image: /assets/images/projects/<slug>.jpg
+   order: 2
+   skills: "comma-separated, list, of, skills"
+   ---
+   ```
 
-## [To Dodge or Not to Dodge?: Predicting League of Legends Match Outcomes](https://github.com/danbratton/portfolio/blob/master/To%20Dodge%20or%20Not%20to%20Dodge.ipynb)
-The purpose of this study is to develop a model to predict the likelihood of a team winning a League of Legends match only using information available prior to the start of a match. The model would provide a recommendation to players to "dodge" a League of Legends match and avoid the consequences of defeat when the probability of victory is low enough such that the nominal LP loss from dodging the match is more beneficial to the player than attempting to win the match. This recommendation tool would increase player enjoyment of the game while working to optimize a player's LP gain per unit of time played.
+   - `order` controls the grid sort on the home page (lowest first).
+   - `card_image` can be `.jpg`, `.png`, or `.svg`. 16:9 (~1600×900) works best.
+   - `card_headline` falls back to `title` if omitted.
 
-## [NYU Course Selection Tool](https://github.com/danbratton/Course-Evaluations/blob/master/NYU%20Stern%20Course%20Evaluation%20-%20Data%20Analysis.ipynb)
-Oftentimes we need to make decisions using data from a wide variety of sources.  When done manually, this process can be error prone, time consuming, and frustrating.  This was exactly the case when I was reviewing which classes to take at NYU Stern while pursuing my MBA.  I had a list of available classes for the upcoming semester, but the course evaluations (reviews by students who took the class previously) were in a completely different place.  I combined the data by scraping both pages with Selenium, cleaned and combined the data with Pandas, and then published the resulting dataframe via a [Shiny web app](https://danbratton.shinyapps.io/XCourses/).
+3. Write the case study body in markdown. Use `##` for section headings — they render with the underline bar.
+
+4. **For the TL;DR callout**, wrap it as:
+
+   ```markdown
+   <div class="tldr" markdown="1">
+
+   ## TL;DR
+
+   Body paragraphs here...
+
+   </div>
+   ```
+
+   The `markdown="1"` attribute tells kramdown to parse markdown inside the div. Leave the blank lines around the inner content — they're required.
+
+5. Blockquotes (`> quoted text`) render with the burnt-orange left border and quote-background styling.
+
+## Replacing placeholder images
+
+- `assets/images/projects/mural-image-panel.svg` — the project card image shown in the home-page grid. Replace with a real 1600×900 JPG/PNG and update the `card_image` path in `_projects/mural-image-panel.md`.
+- `assets/images/favicon.svg` — simple "db" wordmark. Fine to keep or replace.
+
+## Per-case-study OG images (dynamic, Liquid-rendered)
+
+The social preview image for each page is generated dynamically at build time from a shared SVG template:
+
+- **Template:** `_includes/og-image.svg` — the single source of truth for the OG design. Takes parameters `eyebrow`, `title`, `subtitle`, `tag`. Wraps long titles to two lines automatically.
+- **Home page OG:** `assets/og/home.svg` — renders site-level info. Referenced from `index.md` via `og_image: /assets/og/home.svg`.
+- **Per-project OG:** `assets/og/<slug>.svg` — looks up the project by slug, passes its title/company/timeline into the template. Each case study front matter points at its own file via `og_image: /assets/og/<slug>.svg`.
+
+**When you add a new case study**, also create the matching OG file. The body is five lines:
+
+```yaml
+---
+permalink: /assets/og/<slug>.svg
+sitemap: false
+---
+{%- assign project = site.projects | where: "slug", "<slug>" | first -%}
+{% include og-image.svg eyebrow=project.company title=project.title subtitle=project.timeline %}
+```
+
+Replace `<slug>` with the base filename of the case study (e.g. `mural-image-panel`). Add `og_image: /assets/og/<slug>.svg` to the case study's front matter.
+
+### SVG-as-OG caveat
+
+Major social platforms (LinkedIn, Twitter) don't always render SVG in `og:image` — they prefer PNG/JPEG. What the dynamic SVG pipeline gives you:
+
+- Works when someone **opens the URL directly** in a browser.
+- Works in **Slack** (which renders SVG previews).
+- May not render in **LinkedIn or Twitter** previews, depending on crawler behavior.
+
+If you care about guaranteed previews on a specific platform, you have two options:
+
+1. **One-off screenshot:** open the SVG in a browser, export it to PNG at 1200×630, drop it next to the SVG, and point `og_image` at the PNG instead. Good for your most-shared case studies.
+2. **GitHub Actions SVG→PNG conversion:** add a workflow that runs `rsvg-convert` or `sharp` on every push to rasterize the rendered SVGs. Keeps the dynamic pipeline but guarantees raster output. (Not included in this scaffold — add when you need it.)
+
+## Deploying to GitHub Pages + danbratton.com
+
+### First-time setup
+
+1. Create a GitHub repo (any name; this scaffold uses `baseurl: ""` because the site lives at a custom apex domain — the repo name doesn't need to match).
+2. `git init && git add . && git commit -m "Initial portfolio scaffold"`
+3. `git remote add origin git@github.com:<username>/<repo>.git`
+4. `git push -u origin main`
+5. On GitHub: **Settings → Pages → Source** → `Deploy from a branch` → `main` / `(root)`.
+6. Under **Custom domain**, `danbratton.com` should auto-fill from the committed `CNAME` file. If not, enter it manually.
+7. Once DNS propagates, tick **Enforce HTTPS**.
+
+### Porkbun DNS
+
+Log in to Porkbun → Domain Management → Details on `danbratton.com` → DNS.
+
+First, **delete any default parking records** (Porkbun adds ALIAS/A records on `@` when you register a domain — these will override the new records). Also clear the default `www` CNAME if one exists. Leave **URL Forwarding** empty.
+
+Then add:
+
+| Type  | Host    | Answer                    |
+| ----- | ------- | ------------------------- |
+| ALIAS | *(blank)* | `<username>.github.io`  |
+| CNAME | `www`   | `<username>.github.io`    |
+
+Replace `<username>` with your GitHub username. No trailing dots.
+
+If the ALIAS record doesn't take for any reason, fall back to four A records at the apex (host blank):
+
+```
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+```
+
+### Verify
+
+```bash
+dig danbratton.com +short     # should return the GitHub Pages IPs
+dig www.danbratton.com +short # should resolve via <username>.github.io
+```
+
+Then visit:
+
+- <https://danbratton.com> — live site with valid TLS
+- <https://www.danbratton.com> — 301 redirects to the apex
+
+GitHub Pages provisions the Let's Encrypt certificate automatically (~15 minutes after DNS is live). You don't need to configure anything in Porkbun's SSL settings.
+
+## Structure
+
+```
+portfolio/
+├── _config.yml              # site config (title, author, url, collections)
+├── CNAME                    # custom-domain marker for GitHub Pages
+├── Gemfile                  # github-pages gem
+├── _includes/
+│   └── og-image.svg         # shared Liquid-templated OG image
+├── _layouts/
+│   ├── default.html         # <head>, favicon, OG/Twitter meta
+│   ├── home.html            # hero, project grid, contact block
+│   └── case-study.html      # title, .meta line, content, .skills footer
+├── _projects/               # Jekyll collection — one .md per case study
+│   └── mural-image-panel.md
+├── assets/
+│   ├── css/main.css         # Cowork-lifted styles + home-page additions
+│   ├── og/                  # dynamically-rendered OG images (one per page)
+│   │   ├── home.svg
+│   │   └── mural-image-panel.svg
+│   └── images/
+│       ├── favicon.svg
+│       └── projects/
+│           └── mural-image-panel.svg  # card art for the home-page grid
+├── index.md                 # home page content (layout: home)
+└── README.md
+```
