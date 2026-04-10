@@ -6,6 +6,7 @@ company: "Mural"
 timeline: "60 days, API deprecation deadline"
 card_headline: "Data reframes risk at Mural"
 card_image: /assets/images/projects/mural-image-panel.svg
+og_image: /assets/og/mural-image-panel.svg
 order: 1
 skills: "product discovery, partnering with engineering to spec event instrumentation (including session-grain design), SQL analysis, funnel definition, behavioral segmentation, stakeholder management across CS/Design/PM/Legal, memo-driven decision-making, scope negotiation under a hard deadline, phased rollout design, guardrail-metric selection, decision-making under noisy data, contingency planning, post-launch measurement."
 ---

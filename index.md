@@ -3,6 +3,7 @@ layout: home
 name: "Dan Bratton"
 tagline: "Product manager with embedded analytics ownership."
 description: "Product management and analytics case studies from Dan Bratton."
+og_image: /assets/og/home.svg
 ---
 
 I'm a product manager who runs his own analytics. I like instrumentation design, behavioral funnels, and using specific numbers to change what a room believes. Previously at Mural, where I led the 60-day Bing Image Search migration and rebuilt the image panel around what users were actually doing.

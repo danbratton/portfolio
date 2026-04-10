@@ -70,12 +70,42 @@ Open <http://localhost:4000>. Saving a file auto-rebuilds.
 
 ## Replacing placeholder images
 
-Two placeholder assets are SVGs that you should eventually replace with real art:
+- `assets/images/projects/mural-image-panel.svg` — the project card image shown in the home-page grid. Replace with a real 1600×900 JPG/PNG and update the `card_image` path in `_projects/mural-image-panel.md`.
+- `assets/images/favicon.svg` — simple "db" wordmark. Fine to keep or replace.
 
-- `assets/images/og-default.svg` — the default social-sharing preview. LinkedIn, Twitter, and Slack all prefer PNG or JPEG here. Export a 1200×630 PNG (`og-default.png`) and then change the default path in `_layouts/default.html` from `og-default.svg` to `og-default.png`.
-- `assets/images/projects/mural-image-panel.svg` — the project card image for the Mural case study. Replace with a real 1600×900 JPG/PNG and update the `card_image` path in `_projects/mural-image-panel.md`.
+## Per-case-study OG images (dynamic, Liquid-rendered)
 
-The favicon (`assets/images/favicon.svg`) is a simple "db" wordmark — fine to keep or replace.
+The social preview image for each page is generated dynamically at build time from a shared SVG template:
+
+- **Template:** `_includes/og-image.svg` — the single source of truth for the OG design. Takes parameters `eyebrow`, `title`, `subtitle`, `tag`. Wraps long titles to two lines automatically.
+- **Home page OG:** `assets/og/home.svg` — renders site-level info. Referenced from `index.md` via `og_image: /assets/og/home.svg`.
+- **Per-project OG:** `assets/og/<slug>.svg` — looks up the project by slug, passes its title/company/timeline into the template. Each case study front matter points at its own file via `og_image: /assets/og/<slug>.svg`.
+
+**When you add a new case study**, also create the matching OG file. The body is five lines:
+
+```yaml
+---
+permalink: /assets/og/<slug>.svg
+sitemap: false
+---
+{%- assign project = site.projects | where: "slug", "<slug>" | first -%}
+{% include og-image.svg eyebrow=project.company title=project.title subtitle=project.timeline %}
+```
+
+Replace `<slug>` with the base filename of the case study (e.g. `mural-image-panel`). Add `og_image: /assets/og/<slug>.svg` to the case study's front matter.
+
+### SVG-as-OG caveat
+
+Major social platforms (LinkedIn, Twitter) don't always render SVG in `og:image` — they prefer PNG/JPEG. What the dynamic SVG pipeline gives you:
+
+- Works when someone **opens the URL directly** in a browser.
+- Works in **Slack** (which renders SVG previews).
+- May not render in **LinkedIn or Twitter** previews, depending on crawler behavior.
+
+If you care about guaranteed previews on a specific platform, you have two options:
+
+1. **One-off screenshot:** open the SVG in a browser, export it to PNG at 1200×630, drop it next to the SVG, and point `og_image` at the PNG instead. Good for your most-shared case studies.
+2. **GitHub Actions SVG→PNG conversion:** add a workflow that runs `rsvg-convert` or `sharp` on every push to rasterize the rendered SVGs. Keeps the dynamic pipeline but guarantees raster output. (Not included in this scaffold — add when you need it.)
 
 ## Deploying to GitHub Pages + danbratton.com
 
@@ -134,6 +164,8 @@ portfolio/
 ├── _config.yml              # site config (title, author, url, collections)
 ├── CNAME                    # custom-domain marker for GitHub Pages
 ├── Gemfile                  # github-pages gem
+├── _includes/
+│   └── og-image.svg         # shared Liquid-templated OG image
 ├── _layouts/
 │   ├── default.html         # <head>, favicon, OG/Twitter meta
 │   ├── home.html            # hero, project grid, contact block
@@ -142,11 +174,13 @@ portfolio/
 │   └── mural-image-panel.md
 ├── assets/
 │   ├── css/main.css         # Cowork-lifted styles + home-page additions
+│   ├── og/                  # dynamically-rendered OG images (one per page)
+│   │   ├── home.svg
+│   │   └── mural-image-panel.svg
 │   └── images/
 │       ├── favicon.svg
-│       ├── og-default.svg   # replace with 1200x630 PNG for real social previews
 │       └── projects/
-│           └── mural-image-panel.svg  # replace with real 16:9 artwork
+│           └── mural-image-panel.svg  # card art for the home-page grid
 ├── index.md                 # home page content (layout: home)
 └── README.md
 ```
