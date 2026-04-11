@@ -1,14 +1,14 @@
 ---
-title: "Data Reframes Risk: Rebuilding Mural's Image Panel in 60 Days"
+title: "From Forced Migration to Doubling Engagement: Rebuilding Mural's Image Panel in 60 Days"
 description: "How behavioral analysis turned a forced API migration into a product upgrade that doubled weekly active image adders."
-role: "Product Manager (with embedded analytics ownership)"
+role: "Senior Product Manager (with embedded analytics ownership)"
 company: "Mural"
-timeline: "60 days, API deprecation deadline"
+timeline: "60 days: API deprecation deadline"
 card_headline: "Data reframes risk at Mural"
 card_image: /assets/images/projects/mural-image-panel.svg
 og_image: /assets/og/mural-image-panel.svg
 order: 1
-skills: "product discovery, partnering with engineering to spec event instrumentation (including session-grain design), SQL analysis, funnel definition, behavioral segmentation, stakeholder management across CS/Design/PM/Legal, memo-driven decision-making, scope negotiation under a hard deadline, phased rollout design, guardrail-metric selection, decision-making under noisy data, contingency planning, post-launch measurement."
+skills: "product discovery, partnering with engineering to spec event instrumentation (including session-grain design), SQL analysis, funnel definition, behavioral segmentation, stakeholder management across CS/Design/PM/Legal, scope negotiation under a hard deadline, phased rollout design, guardrail-metric selection, decision-making under noisy data, contingency planning, post-launch measurement."
 ---
 
 <div class="tldr" markdown="1">
@@ -23,7 +23,7 @@ I ran a behavioral analysis of the existing panel and found that **90% of image 
 
 I used that data to reframe the conversation: the "long tail" wasn't where the value lived, *and* a copyright-safe library would let customers turn the panel back on. We replaced Bing with Unsplash, added the GIPHY GIF library and a native emoji library, and unified them into a single search experience.
 
-We phased the rollout — internal employees first, then Free/Team+ users, then broad — with retention and activation guardrail metrics watching for upstream damage, and a Brave API fallback held in reserve in case we needed to abort. We shipped on time, and post-launch dashboards showed task completion, keyword-search success, and weekly active image adders all moved in the right direction — the last one roughly **doubling** from ~7k to ~15k weekly active users.
+We phased the rollout — internal employees first, then Free/Team+ users, then broad — with retention and activation guardrail metrics watching for upstream damage, and a Brave API fallback held in reserve in case we needed to abort. We shipped on time, and post-launch dashboards showed task completion, keyword-search success, and weekly active image adders all moved in the right direction with weekly active users more than **doubling**.
 
 </div>
 
