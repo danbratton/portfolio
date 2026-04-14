@@ -1,43 +1,47 @@
 ---
-title: "Data Reframes Risk: Rebuilding Mural's Image Panel in 60 Days"
-description: "How behavioral analysis turned a forced API migration into a product upgrade that doubled weekly active image adders."
-role: "Product Manager (with embedded analytics ownership)"
+layout: case-study
+title: "From Forced Migration to Doubling Engagement: Rebuilding Mural's Image Panel in 60 Days"
+description: "How behavioral analysis turned a forced API migration and skeptical stakeholders into a product upgrade that doubled weekly active image adders."
+role: "Senior Product Manager"
 company: "Mural"
-timeline: "60 days, API deprecation deadline"
-card_headline: "Data reframes risk at Mural"
-card_image: /assets/images/projects/mural-image-panel.svg
-og_image: /assets/og/mural-image-panel.svg
-order: 1
-skills: "product discovery, partnering with engineering to spec event instrumentation (including session-grain design), SQL analysis, funnel definition, behavioral segmentation, stakeholder management across CS/Design/PM/Legal, memo-driven decision-making, scope negotiation under a hard deadline, phased rollout design, guardrail-metric selection, decision-making under noisy data, contingency planning, post-launch measurement."
+timeline: "January 2026"
+og_type: article
+permalink: /projects/mural-image-panel.html
 ---
 
 <div class="tldr" markdown="1">
-
 ## TL;DR
+Shortly before the Thanksgiving holiday, Mural's image search provider (Bing Image Search) gave us 60 days before API shutdown. Given the short timeline, there was a strong sentiment that we should do a replace-in-kind approach. Stakeholders were worried that deviating from an web image search provider would break long-tail use cases. Such as named-entity searches like "Taylor Swift" or album art needed for niche icebreaker templates. 
 
-Mural's image search provider (Bing Image Search) gave us 60 days before API shutdown. Stakeholders were worried that dropping Bing would break long-tail use cases — named-entity searches like "Taylor Swift," album art needed for certain Mural templates.
-
-At the same time, legal had flagged any copyright-returning library as a material risk, and some customers had already toggled the image panel off at the account level because of it.
+At the same time, legal had flagged any copyright-returning library as a material risk. In fact, some customers had already toggled the image panel off because of this risk.
 
 I ran a behavioral analysis of the existing panel and found that **90% of image searches were simple emotional or contextual terms** ("happy," "christmas," "cat"), and that savvy users were following an image search with a second query appended with "GIF" or "emoji" — a workaround for a usability gap that only power users had figured out.
 
-I used that data to reframe the conversation: the "long tail" wasn't where the value lived, *and* a copyright-safe library would let customers turn the panel back on. We replaced Bing with Unsplash, added the GIPHY GIF library and a native emoji library, and unified them into a single search experience.
+I used that data to reframe the conversation: the long tail searches such as "Taylor Swift" wasn't where the value lived. Behavioral analysis showed that we had an opportunity to maximize the impact of this change by improving how the image panel served the most important use cases for the most users. For example, using emojis to react to sprint retrospective topics or GIFs to express your mood in an icebreaker. On top of that, a copyright-safe library would mitigate business risk and unblock customers who had toggled off this critical feature.
 
-We phased the rollout — internal employees first, then Free/Team+ users, then broad — with retention and activation guardrail metrics watching for upstream damage, and a Brave API fallback held in reserve in case we needed to abort. We shipped on time, and post-launch dashboards showed task completion, keyword-search success, and weekly active image adders all moved in the right direction — the last one roughly **doubling** from ~7k to ~15k weekly active users.
+We replaced Bing with Unsplash, added the GIPHY GIF library and a native emoji library, and unified them into a single search experience. This supported the primary use cases for users while product-izing the power user workarounds discovered during my analysis.
 
+We phased the rollout in this way: internal employees first, then Free/Team+ users, then broad release. All the while, we kept a backup plan of the Brave image search API in reserve.
+
+- The **internal release** let us release an unpolished version to get early feedback and find bugs.
+- The **Free/Team+ release** gave us 1 week of data to show the release did no harm to leading retention metrics. This was important for stakeholder buy-in.
+- The **broad release** showed that the new image panel design was far superior. Post-launch dashboards showed task completion, keyword-search success, and weekly active image adders all moved in the right direction. **Weekly active users increased >100% and frequency of use increasing >25%**.
 </div>
+
+## Background
+Mural is a digital whiteboard for the enterprise. The canvas acts as a place where distributed teams can come together to meet and work. Common use cases include agile rituals, such as daily stand ups and retrospectives, product planning, such as roadmaps and strategy, marketing campaign planning, and architecture diagramming. Imagery is a critical part of this experience as it plays an important role in visual communication and in giving users ways to express themselves in virtual meetings. 
 
 ## Situation
 
-Bing Image Search announced it was deprecating its API with **60 days' notice**. It was the backbone of Mural's image panel, which lets users search for images and drop them onto the collaborative canvas during workshops, brainstorms, and retros. No replacement was pre-scoped. No migration plan existed.
+Shortly before the Thanksgiving holiday in 2025, Bing Image Search announced it was deprecating its API with **60 days' notice**. It was the backbone of Mural's image panel, which lets users search for images and drop them onto the collaborative canvas during workshops, brainstorms, and retros. No replacement was pre-scoped. No migration plan existed. My team was tapped to scope and launch the replacement.
 
 Stakeholder anxiety concentrated in three places:
 
 - **Customer Support** was worried about a wave of tickets from users who could no longer find specific images they were used to finding.
-- **Design leadership** was concerned that narrowing the content library would break familiar workflows, particularly for workshop runners and power users.
-- **The Templates PM** flagged a specific concern: a small number of templates (e.g., "favorite music album") depended on users being able to search for copyrighted imagery like album art — something no non-Bing provider would return.
+- **Design leadership** was concerned that changing or narrowing the image library would break familiar workflows, particularly for workshop runners and power users.
+- **The Templates PM** flagged a specific concern: a small number of templates (e.g., "favorite music album") depended on users being able to search for niche copyrighted imagery like album art — something only a web image search library like Bing could provide.
 
-There was also an important piece of context that surfaced during stakeholder conversations: **Mural's legal team flagged any image library that returned copyrighted results as a material risk**. The existing Bing-powered panel sat uncomfortably inside that risk envelope. The consequence wasn't hypothetical — **some customers had actually toggled the image panel off entirely at the account level** rather than expose their users to potentially copyrighted imagery. A baseline collaboration feature was being disabled by the customers we most wanted using it, because we couldn't give them a clean answer on content safety.
+There was also an important piece of context that surfaced during stakeholder conversations: **Mural's legal team flagged any image library that returned copyrighted results as a material risk**. The consequence wasn't hypothetical — **some customers had actually toggled the image panel off entirely at the account level** rather than expose their users to potentially copyrighted imagery. A baseline collaboration feature was being disabled by the customers we most wanted using it, because we couldn't give them an image library that didn't create risk.
 
 That changed the framing of the Bing deprecation. It wasn't just a forced migration — it was an opportunity to solve a standing business problem that had been quietly costing us adoption. The default instinct in the room was to do a like-for-like swap: find another general-purpose image API and plug it in. That path was technically viable but bad on two fronts — most alternatives had worse content quality, and, more importantly, a general-purpose replacement would have kept us inside the same copyright risk envelope that had caused customers to disable the feature in the first place. It also didn't address any of the usability issues we'd been quietly tracking.
 
@@ -80,17 +84,17 @@ Three findings changed the conversation:
 
 I wrote a single data memo and shared it ahead of the decision meeting. The headline was:
 
-> *The feared long tail accounts for a small fraction of real usage. The actual long tail is our own power-user workaround — and we can replace it with a first-class experience.*
+> *The long tail search terms accounts for a small fraction of real usage. Just 10% of searches account for 90% of search volume. Nearly all users are actually searching for the same emotional or contextual terms. On top of that, we can replace our own power-user workaround with a first-class experience.*
 
 The 90% number did most of the work. It was specific enough to cut through the hypotheticals, and it directly answered the CS team's concern: the searches they were imagining weren't the searches that were most valuable. For Design, the follow-up-query data reframed the conversation from "are we removing a feature?" to "we're promoting a hidden workaround into a first-class experience."
 
 The Templates PM needed a different conversation. Their concern was specific and legitimate — a handful of templates *did* depend on copyrighted imagery. I handled that one with **both data and a mitigation**:
 
-- **Data:** I pulled usage on the affected templates. The "favorite music album" class of templates sat in the very low-usage tier — a meaningful concern for the owners of those templates, but not a blocker for the broader decision.
-- **User interviews:** I met with Mural's LUMA instructors, an arm of the company focused on teaching our customers design thinking, to understand what impact the change would have on the templates they use for workshops. The feedback boiled down to "this doesn't change my work" and "this is a huge improvement".
+- **Data:** I pulled usage on the affected templates. The "favorite music album" class of templates sat in the very low-usage tier. This was a meaningful concern for the owners of those templates, but should not be a blocker for the broader decision. *Mural's core use case templates had >10,000 times more usage than the templates in question.*
+- **User interviews:** I met with Mural's LUMA instructors, an arm of the company focused on teaching our customers design thinking, to understand what impact the change would have on the templates they use for workshops. The feedback boiled down to "this doesn't change my work" and "this is a huge improvement". *This was a powerful piece of evidence from the most important power users of templates.*
 - **Workaround:** I noted that these templates were not wholly broken with this change. Users committed to using this template could still use them by search the internet for the specific, copyright image they needed. Legal had cleared this specific use case. *This was an acceptable tradeoff given the low volume of usage these templates had.*
 
-That combination — a number that made the risk real, feedback from LUMA instructors, and an existing workaround — tempered the Templates PM's concerns. By the time we walked into the decision meeting, the hardest conversations had already happened in 1:1s, and the meeting itself was mostly about sequencing the build.
+By the time we walked into the decision meeting, the hardest conversations had already happened in 1:1s, and the meeting itself was mostly about sequencing the build.
 
 ## Recommendation
 
@@ -149,3 +153,7 @@ What unblocked a better answer wasn't cleverness — it was **data specific enou
 If I were doing it again, I'd run the template-usage analysis earlier — I went looking for it only after the Templates PM raised the concern, and I think I could have pre-empted the objection by walking in with it already in hand. Lesson learned: when you know which stakeholders are going to push back, pre-build the answer to their question before they ask it.
 
 The Phase 2 rollout also taught me something about arguing with imperfect data. My instinct in that room was to keep measuring until the signal was clean, and I had to consciously push against that instinct because the deadline didn't allow for it. What made the "ship anyway" argument defensible wasn't confidence in the data — the data was genuinely noisy — it was the *structure* of the bet: guardrail metrics on the downside, qualitative signal plus analytical grounding on the directional upside, and a pre-built fallback if we were wrong. When you can't get certainty, the best you can do is make the shape of the risk legible to the room. That's a posture I've carried into every high-stakes launch since.
+
+<div class="skills" markdown="1">
+**Skills demonstrated:** product discovery, partnering with engineering to spec event instrumentation (including session-grain design), SQL analysis, funnel definition, behavioral segmentation, stakeholder management across CS/Design/PM/Legal, scope negotiation under a hard deadline, phased rollout design, guardrail-metric selection, decision-making under noisy data, contingency planning, post-launch measurement.
+</div>

@@ -1,5 +1,0 @@
----
-permalink: /assets/og/home.svg
-sitemap: false
----
-{% include og-image.svg eyebrow="Portfolio" title=site.author subtitle="Product management & analytics case studies" %}

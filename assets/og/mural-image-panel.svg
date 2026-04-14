@@ -1,6 +1,0 @@
----
-permalink: /assets/og/mural-image-panel.svg
-sitemap: false
----
-{%- assign project = site.projects | where: "slug", "mural-image-panel" | first -%}
-{% include og-image.svg eyebrow=project.company title=project.title subtitle=project.timeline %}
