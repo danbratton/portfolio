@@ -4,7 +4,7 @@ title: "From Forced Migration to Doubling Engagement: Rebuilding Mural's Image P
 description: "How behavioral analysis turned a forced API migration and skeptical stakeholders into a product upgrade that doubled weekly active image adders."
 role: "Senior Product Manager"
 company: "Mural"
-timeline: "January 2026"
+timeline: "Q1 2026"
 og_type: article
 permalink: /projects/mural-image-panel.html
 ---
